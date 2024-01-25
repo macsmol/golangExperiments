@@ -5,6 +5,12 @@ import (
 	"strconv"
 	"time"
 )
+
+type Foo struct {
+	X int
+	F float32
+}
+
 /*
 Row major is the one that makes smaller jumps; 
 Column major during each iteration indexes addresses that are size apart
@@ -15,6 +21,28 @@ func SumRowMajor(matrix []int, size int) int64 {
 	for i := 0; i < size; i++ {
 		for j := 0; j < size; j++ {
 			sum += int64(matrix[i*size+j])
+		}
+	}
+	return sum
+}
+
+func SumFooRowMajor(matrix []Foo, size int) int64 {
+	defer Timer("Foo Row Major, size " + strconv.Itoa(size))()
+	var sum int64 = 0
+	for i := 0; i < size; i++ {
+		for j := 0; j < size; j++ {
+			sum += int64(matrix[i*size+j].X)
+		}
+	}
+	return sum
+}
+
+func SumFooNestedRowMajor(matrix [][]Foo, size int) int64 {
+	defer Timer("Foo Nested Row Major, size " + strconv.Itoa(size))()
+	var sum int64 = 0
+	for i := 0; i < size; i++ {
+		for j := 0; j < size; j++ {
+			sum += int64(matrix[i][j].X)
 		}
 	}
 	return sum
