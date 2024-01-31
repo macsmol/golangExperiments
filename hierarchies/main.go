@@ -19,6 +19,14 @@ type ifooifoo struct {
 	iff, iff2 intfoo
 }
 
+type ifooifoo2 struct {
+	iff, iff2 intfoo
+}
+
+type ifooifoo3 struct {
+	iff3, iff4 intfoo
+}
+
 type bar foo
 func (b bar) String() string {
 	return "Bar " + fmt.Sprintf("%f", b)
@@ -42,17 +50,17 @@ func main() {
 	
 	fmt.Println("------------")
 	var fuf foofoo = foofoo{1.1,2.2}
-
+	
 	//fuf = fuf(f) - compilation error
 	//f = foo(fuf) - compilation error
-	fmt.Println("fuf: ", fuf)
+	fmt.Println("fuf: ", fuf) //  works but does not call String from foo but from floats
 	
 	var ifuf ifooifoo = ifooifoo{1,2}
 	fmt.Println("ifuf: ", ifuf)
-
+	
 	//ifuf = ifooifoo(fuf) - compilation error
 	//fuf = foofoo(ifuf) - compilation error
-
+	
 	var fufbar foofoobar = foofoobar(fuf)
 	fmt.Println("fufbar from fuf", fufbar)
 	
@@ -60,4 +68,14 @@ func main() {
 	fufbar.f2 = 200
 	fuf = foofoo(fufbar)
 	fmt.Println("fuf from fufbar", fuf)
+	
+	fmt.Println("------------")
+	var ifuf2 ifooifoo2 = ifooifoo2{10,20}
+	fmt.Println("ifuf2: ", ifuf2)
+	
+	ifuf2  = ifooifoo2(ifuf) // surprise - this actually works!
+	// var ifuf3 ifooifoo3 = ifooifoo3(ifuf) - but this is compile error - field names different
+	fmt.Println("ifuf2 from ifuf: ", ifuf2)
+
+
 }
